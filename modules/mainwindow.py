@@ -12,6 +12,8 @@ from PySide6.QtWidgets import QMainWindow, QFileDialog
 # You need to run the following command to generate the ui_form.py file
 #     pyside6-uic form.ui -o ui_form.py, or
 #     pyside2-uic form.ui -o ui_form.py
+#
+# I found that the created file needs to be copied by hand into the folder, but that's because Qt Creator is annoying
 
 from modules.ui_form import Ui_MainWindow
 from modules.editgcode import EditGcode
@@ -29,11 +31,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.gedit = None
         self.loadedGcode = None
 
-        # Variables for port selection - add a refresh button, improve how it works
-        self.sel_port = None
-        self.port = None # add a way to get this port
+        # Variables for port selection
+        self.sel_port = None # holds the portselection instance
+        self.port = None
 
-        # Sets the settings to default upon initialization
+        # Sets the settings to default upon initialization - not yet implemented
         self.fileName = "default"
         self.set_settings(self.fileName)
 
@@ -41,7 +43,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.app = app
 
-        # insert directory
+        # Code to stop movement - feature not yet implemented
         self.stopcode = ""
 
         # Variables for selection
@@ -58,7 +60,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.x_min_max = [0,80]
         self.y_min_max = [0,100]
-        self.z_min_max = [0,20]
+        self.z_min_max = [0,40]
 
         self.calibration = [0,0,0]
 
@@ -69,6 +71,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # This is where the ToArduino() instance will live
         self.interpretor = None
 
+        # Buttons and such
         self.actionSave.triggered.connect(self.save)
         self.actionSave_As.triggered.connect(self.saveAs)
         self.actionLoad.triggered.connect(self.load)
@@ -91,7 +94,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.row_edit.returnPressed.connect(self.get_row)
         
 
-        # time
+        # time - not yet implemented
         self.run.released.connect(self.go)
         self.stop.released.connect(self.stop_running)
 
@@ -121,7 +124,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.runtime = ToArduino()
 
-        self.sel_cal = None
+        # Calibration
         self.calInst = Calibration()
 
     #### Menubar functions
@@ -158,28 +161,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def reset(self):
         self.set_settings(self.fileName)
 
-    #
+    # Controls the PortSelection window
     def ports(self):
         if self.sel_port is None:
             self.sel_port = PortSelection(self)
-        self.sel_port.show()
+            self.sel_port.show()
+        else:
+            print("Already up")
 
+    # Controls the calibration window
     def calibration_mode(self):
-        if self.port and self.sel_cal is None:
+        if self.port:
             self.calInst.get_port(self.port)
             self.calInst.show()
         else:
-            print("Error")
+            print("No port selected")
     
-    #
+    # Edit gcode - obsolete
     def gcode(self):
         EditGcode.gcode()
     
-    #
+    # Edit gcode - obsolete
     def code(self):
         EditGcode.code()
 
-    #
+    # Sends you to the repo - change to a google doc with links to Marlin, etc
     def documentation(self):
         webbrowser.open("https://github.com/sk4123/Custom_XY_Stage")
 
@@ -187,26 +193,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     #### Left hand side
 
+    # Will display that a port is chosen
     def display_port(self):
         print("hello")
 
-    #
+    # Will enable/disable the motors
     def dismotors(self):
         print("m")
 
-    #
+    # Auto homing feature for all axes
     def auto_home(self):
-        # need to find a way to store calibration values
         self.runtime.change_selection("G28")
         self.runtime.change_port(self.port)
         self.runtime.change_speed(self.feed)
         self.runtime.sendToArduino()
 
-    #
+    # Selects the well
     def well_selection(self):
         self.mode = "well"
 
-    # a place for well_edit
+    # Gets the well
     def get_well(self):
         text = self.well_edit.text().strip().lower()
         # changes these checks
@@ -214,34 +220,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.type = ["well", text]
         else:
             print("Too many characters or an int was not put in")
-    
-    # sending the well edit value
 
-    # 
+    # Selects the row
     def row_selection(self):
         self.mode = "row"
 
-    # a place for row_edit
+    # Gets the row
     def get_row(self):
         text = self.row_edit.text().strip.lower()
         if len(text) < 2 and int(text[0]):
             self.type = ["row", text]
         else:
             print("Too many characters or an int was not put in")
-        
-    
-    # sending the row edit value
 
-    # 
+    # Selects everything
     def all_selection(self):
         self.mode = "all"
 
 
-    # a place for the time estimation
+    # Will show an estimate of how long the operation will take
     def time_est(self):
         print("how")
 
-    # 
+    # Starts the ToArduino operation
     def go(self):
         # add a check to see if both are non None
         if self.mode == self.type[0]:
@@ -252,7 +253,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             print("The mode and desired imaging area do not match")
 
-    #
+    # Stops everything - not yet implemented, requires an interrupt pin
     def stop_running(self):
         ToArduino(self.port,self.stopcode).sendToArduino()
 
@@ -260,12 +261,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     #### Center
 
-    # a place for the progress bar
+    # A place for the progress bar
     def setup_progress(self):
         self.progress_bar.setMinimum(0)
         self.progress_bar.setMaximum(100)
 
-    #
+    # 
     def set_time(self,current_time,max_time):
         self.progress_bar.setValue(100*current_time/max_time)
 
@@ -313,41 +314,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             print("Input exceeds the bounds")
 
-    # sends position changes to the Arduino
-    def send(self):
-        print("sent")
-
-    # 
-    def x_home_set(self):
-        print("x")
-
-    # 
-    def y_home_set(self):
-        print("Y")
-
-    # 
-    def z_home_set(self):
-        print("Z")
-
-    # a place to read the x
+    # A place to read the x and y speeds - I am choosing to combine them
     def get_x_speed(self):
         self.feed[0] = int(self.x_speed.text().strip())
 
-    # a place to read the z
+    # a place to read the z speed
     def get_z_speed(self):
         self.feed[1] = int(self.z_speed.text().strip())
 
-    # 
-    def set_speed(self):
-        print("s")
-
-    #
+    # Shows the gcode edit window
     def editGcode(self):
         if self.gedit is None:
             self.gedit = EditGcode(self.loadedGcode)
-        self.gedit.show()
+            self.gedit.show()
 
-    # set default to the gcode folders
+    # Loads in a gcode file
+    # Set default to the gcode folders
     def loadGcode(self):
         fileName,_ = QFileDialog.getOpenFileName(self, "Open File",
                                                       "/home/",

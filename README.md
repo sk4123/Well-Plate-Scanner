@@ -17,16 +17,18 @@ Necessary changes:
     New stepper drivers
     Add errors
     Styling
+    Making the UI better match the program requirements
 
 
-This currently runs on Python 12.4 through a virtual environment included in the repo.
+This currently runs on Python 12.4 through a virtual environment.
 Libraries include:
     PySide6 version 6.7.2
     Pyserial version 3.5
+Anything greater than or equal to these should work.
 
-The folder named "ui" contains the files used to create the UI using the open-source version of QT Creator: https://www.qt.io/download-open-source.
+The folder named "ui" contains the files used to create the UI using the open-source version of QT Creator: https://www.qt.io/download-open-source. It is available on another repo. QT Creator is a pain to work with.
 
-The folder named "Marlin-2.1.2.4" contains the Marlin 2.1.2.4 code used on the Arduino Mega: https://github.com/MarlinFirmware. The main change files are Marlin/Configuration.h, Marlin/Configuration_adv.h, and Marlin/src/pins/mega/pins_MEGACONTROLLER.h. Full changes are below:
+The folder named "Marlin" contains the Marlin 2.1.2.4 code used on the Arduino Mega: https://github.com/MarlinFirmware. The main change files are Marlin/Configuration.h, Marlin/Configuration_adv.h, and Marlin/src/pins/mega/pins_MEGACONTROLLER.h. These files will replace those in Marlin 2.1.2.4. Full changes are below:
     Configuration.h
         91: BOARD_MEGACONTROLLER
         162-164: TB6560

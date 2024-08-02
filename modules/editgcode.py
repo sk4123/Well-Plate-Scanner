@@ -2,6 +2,10 @@
 UI which allows you to edit the Gcode directly
 '''
 
+# At the moment there is no reason to have this. Will keep it anyway.
+
+# The editting features on files do not work as intended
+
 import os.path
 
 from PySide6.QtWidgets import QMainWindow, QTextEdit, QFileDialog
