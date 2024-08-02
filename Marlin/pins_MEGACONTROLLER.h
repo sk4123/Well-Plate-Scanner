@@ -47,12 +47,12 @@
 //
 // Limit Switches
 //
-#define X_MIN_PIN                             43
-#define X_MAX_PIN                             42
-#define Y_MIN_PIN                             38
+#define X_MIN_PIN                             37
+#define X_MAX_PIN                             38
+#define Y_MIN_PIN                             40
 #define Y_MAX_PIN                             41
-#define Z_MIN_PIN                             40
-#define Z_MAX_PIN                             37
+#define Z_MIN_PIN                             42
+#define Z_MAX_PIN                             43
 
 //
 // Z Probe (when not Z_MIN_PIN)
@@ -64,21 +64,21 @@
 //
 // Steppers
 //
-#define X_STEP_PIN                            62  // A8
-#define X_DIR_PIN                             63  // A9
-#define X_ENABLE_PIN                          61  // A7
+#define X_STEP_PIN                            2  // A8
+#define X_DIR_PIN                             3  // A9
+#define X_ENABLE_PIN                          22  // A7
 
-#define Y_STEP_PIN                            65  // A11
-#define Y_DIR_PIN                             66  // A12
-#define Y_ENABLE_PIN                          64  // A10
+#define Y_STEP_PIN                            4  // A11
+#define Y_DIR_PIN                             5  // A12
+#define Y_ENABLE_PIN                          23  // A10
 
-#define Z_STEP_PIN                            68  // A14
-#define Z_DIR_PIN                             69  // A15
-#define Z_ENABLE_PIN                          67  // A13
+#define Z_STEP_PIN                            6  // A14
+#define Z_DIR_PIN                             7  // A15
+#define Z_ENABLE_PIN                          24  // A13
 
-#define E0_STEP_PIN                           23
-#define E0_DIR_PIN                            24
-#define E0_ENABLE_PIN                         22
+#define E0_STEP_PIN                           58
+#define E0_DIR_PIN                            59
+#define E0_ENABLE_PIN                         60
 
 #define E1_STEP_PIN                           26
 #define E1_DIR_PIN                            27
@@ -88,23 +88,23 @@
 // Temperature Sensors
 //
 #if TEMP_SENSOR_0 == -1
-  #define TEMP_0_PIN                           4  // Analog Input
+  #define TEMP_0_PIN                           61  // Analog Input
 #else
-  #define TEMP_0_PIN                           0  // Analog Input
+  #define TEMP_0_PIN                           61  // Analog Input
 #endif
 
 #if TEMP_SENSOR_1 == -1
-  #define TEMP_1_PIN                           5  // Analog Input
+  #define TEMP_1_PIN                           62  // Analog Input
 #else
-  #define TEMP_1_PIN                           2  // Analog Input
+  #define TEMP_1_PIN                           62  // Analog Input
 #endif
 
-#define TEMP_2_PIN                             3  // Analog Input
+#define TEMP_2_PIN                             63  // Analog Input
 
 #if TEMP_SENSOR_BED == -1
-  #define TEMP_BED_PIN                         6  // Analog Input
+  #define TEMP_BED_PIN                         64  // Analog Input
 #else
-  #define TEMP_BED_PIN                         1  // Analog Input
+  #define TEMP_BED_PIN                         64  // Analog Input
 #endif
 
 //

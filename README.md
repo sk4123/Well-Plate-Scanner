@@ -49,6 +49,7 @@ The folder named "Marlin" contains the Marlin 2.1.2.4 code used on the Arduino M
         1734: 40
     Configuration_adv.h
         1103: { false, false, false }
+        3102: Uncommented
     pins_MEGACONTROLLER
         50-55: 37, 38, 40, 41, 42, 43
         67-77: 2, 3, 22, 4, 5, 23, 6, 7, 24
